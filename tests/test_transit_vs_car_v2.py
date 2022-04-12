@@ -14,7 +14,7 @@ from transit_vs_car_v2 import cli
 def response():
     """Sample pytest fixture.
 
-    See more at: http://doc.pytest.org/en/latest/fixture.html
+    See more at: https://doc.pytest.org/en/latest/fixture.html
     """
     # import requests
     # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
@@ -35,3 +35,8 @@ def test_command_line_interface():
     help_result = runner.invoke(cli.main, ['--help'])
     assert help_result.exit_code == 0
     assert '--help  Show this message and exit.' in help_result.output
+
+
+def test_square():
+    assert transit_vs_car_v2.square(7) == 49
+    assert transit_vs_car_v2.square(5) == 24
