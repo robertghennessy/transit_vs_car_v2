@@ -104,3 +104,7 @@ ENV/
 # IDE settings
 .vscode/
 .idea/
+
+# Configuration file
+config.py
+config.ini
