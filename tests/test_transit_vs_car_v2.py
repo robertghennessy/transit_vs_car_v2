@@ -37,6 +37,3 @@ def test_command_line_interface():
     assert '--help  Show this message and exit.' in help_result.output
 
 
-def test_square():
-    assert transit_vs_car_v2.square(7) == 49
-    assert transit_vs_car_v2.square(5) == 24

@@ -57,3 +57,12 @@ def query_google_api(google_client, start_loc, end_loc):
     duration_in_traffic = (directions_result[0]['legs'][0][
         'duration_in_traffic']['value'])
     return duration_in_traffic, directions_result
+
+
+def query_google_traffic(trip_index, trip_id, start_station, end_station,
+                         start_loc, end_loc, sql_db_loc):
+    """
+    Not sure if this needs to be moved over from v1. Just gets the data, creates some data objects and saves data.
+    I would consider clumping things together
+    """
+
