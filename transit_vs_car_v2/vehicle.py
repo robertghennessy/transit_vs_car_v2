@@ -8,6 +8,7 @@ Description: This file contains a class for a Vehicle that contains real time in
 import numpy as np
 import pandas as pd
 import datetime as dt
+import dateutil.parser as dp
 
 
 class VehicleGTFSRT:
@@ -20,7 +21,7 @@ class VehicleGTFSRT:
         """
         self.id = input_dict["id"]
         self.timestamp = dt.datetime.fromtimestamp(float(input_dict["tripUpdate"]["timestamp"]), dt.timezone.utc)
-        self.utc_times = self.extract_times(input_dict["tripUpdate"]["stopTimeUpdate"])
+        self.stop_times_utc = self.extract_times(input_dict["tripUpdate"]["stopTimeUpdate"])
 
     def extract_times(self, stop_time_updates: dict) -> pd.DataFrame:
         """
@@ -44,19 +45,28 @@ class VehicleGTFSRT:
 
 
 class VehicleSIRI:
-    def __init__(self, input_dict: dict):
+    def __init__(self, vehicle_dict: dict):
         """
-        Initialize the vehicle.
+        Initialize the vehicle by parsing vehicle_dict. Specification of the api is provided at
+        https://511.org/sites/default/files/pdfs/511-SF-Bay-Open-Data-Specification-Transit.pdf
 
-        :param input_dict: Dictionary that contains information for a vehicle.
-        :type input_dict: dict
-        """
-        self.id = input_dict["id"]
-        self.timestamp = dt.datetime.utcfromtimestamp(float(input_dict["tripUpdate"]["timestamp"]))
-        self.utc_times = self.extract_times(input_dict["tripUpdate"]["stopTimeUpdate"])
+        :param vehicle_dict: Dictionary from query siri that contains information for a vehicle.
+        :type vehicle_dict: dict
 
-    def extract_times(self, vehicle_dict: dict) -> pd.DataFrame:
-        """
-        Converts vehicle dictionary into a pandas dataframe.
+        Description of the properties
+        recorded_at_time:
 
         """
+        monitored_call = vehicle_dict['MonitoredVehicleJourney']['MonitoredCall']
+        self.recorded_at_time = dp.parse(vehicle_dict['RecordedAtTime']),
+        self.trip_id =  vehicle_dict['MonitoredVehicleJourney']['FramedVehicleJourneyRef']['DatedVehicleJourneyRef'],
+        self.station_name = monitored_call['StopPointName'],
+        self.stop_id = monitored_call['StopPointRef'],
+        self.aimed_arrival_time = dp.parse(monitored_call['AimedArrivalTime']),
+        self.expected_arrival_time =  dp.parse(monitored_call['ExpectedArrivalTime']),
+        self.aimed_departure_time = dp.parse(monitored_call['AimedDepartureTime']),
+        self.expected_departure_time = dp.parse(monitored_call['ExpectedDepartureTime']),
+        self.vehicle_at_stop =  monitored_call['VehicleAtStop']
+
+
+

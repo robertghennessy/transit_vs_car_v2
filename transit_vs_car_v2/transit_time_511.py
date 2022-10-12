@@ -6,8 +6,7 @@ Bay Area by using 511 api.
 """
 import requests
 import json
-import datetime as dt
-import pandas as pd
+# below comes from gtfs-realtime-bindings package
 from google.transit import gtfs_realtime_pb2
 from google.protobuf.json_format import MessageToDict
 
@@ -36,8 +35,7 @@ def query_gtfs_rt(transit_api_key: str, gtfs_rt_api_website: str, transit_agency
 
 def query_siri_511(transit_api_key: str, siri_511_api_website: str, transit_agency: str) -> list:
     """
-    Query the 511 api to collect stop monitoring information. Convert the json
-        to a dict
+    Query the 511 api to collect stop monitoring information.
 
     :param transit_api_key: string that contains the api key for 511.org
     :type transit_api_key: str
